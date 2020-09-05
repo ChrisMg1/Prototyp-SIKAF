@@ -1,0 +1,33 @@
+set terminal png
+set nogrid
+
+set nologscale x
+set nologscale y
+
+set xdata time
+set timefmt "%Y-%m-%d %H:%M:%S"
+set format x "%H:%M:%.3S"
+
+set xlabel 'timestamp'
+set ylabel 'data'
+set title 'Received Packets From Moving Transmitter'
+# set nokey
+
+set xtics out rotate by -80
+unset ytics
+set yrange [1:4]
+set y2tics 1
+set y2range [0:4.5]
+set y2label 'distance'
+set key below
+
+set datafile separator ";"
+set output '/home/pi/my_scripts/plots/g5-wifi-dist.png'
+
+#TODO: First line names??
+
+plot '/home/pi/my_scripts/logfiles/20160905_BT-received.log' using 1:($4-18) with points lc rgb 'blue' pointtype 1 title 'Bluetooth', \
+'/home/pi/my_scripts/logfiles/20160905_G5-received.log' using 1:($2+0.5) with points lc rgb 'red' pointtype 1 title 'WiFi', \
+'/home/pi/my_scripts/logfiles/20160905_BT-received.log' using 1:6 with lines lc rgb 'green' axes x1y2 title 'Movement'
+
+# plot [:] [:]  '/home/pi/my_scripts/logfiles/20160905_BT-received.log'
